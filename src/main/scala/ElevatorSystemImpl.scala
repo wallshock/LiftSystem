@@ -63,44 +63,43 @@ class ElevatorSystemImpl(val floors:Int) extends ElevatorSystem {
   override def status: Array[(Int, Int, Int)] =
     elevators.map(x => x.getStatus).toArray
 
-  def chooseBestElevator(elevators: Array[ElevatorImpl], requestFloor: Int, requestDirection: Int): Int = {
-    var bestId = 0
+  def chooseBestElevator(elevators: Array[ElevatorImpl], requestFloor: Int, requestDirection: Int): Option[Int] = {
     val possibleElevators = elevators.filter { elevator =>
       if (elevator.currentFloor == requestFloor) {
         true // if an elevator is already on the same floor as the request, it is a possible candidate
       } else if (requestDirection == 1) {
         (elevator.direction == 1 || elevator.direction == 0) && elevator.currentFloor < requestFloor // the elevator must be going up and below the request floor
-      } else {
+      } else if (requestDirection == -1) {
         (elevator.direction == -1 || elevator.direction == 0) && elevator.currentFloor > requestFloor // the elevator must be going down and above the request floor
+      } else {
+        false // invalid request direction
       }
     }
 
-    if (possibleElevators.isEmpty)
-      elevators.foldLeft(elevators.head) { (closestElevator, elevator) =>
-        val closestDistance = math.abs(closestElevator.currentFloor - requestFloor)
-        val currentDistance = math.abs(elevator.currentFloor - requestFloor)
-        if (currentDistance > closestDistance) {
-          bestId = closestElevator.id
-        } else {
-          bestId = elevator.id
-        }
-      }
-      
-    else { // there is at least one possible elevator
+    if (possibleElevators.nonEmpty) {
       // find the closest elevator among the possible candidates
-      possibleElevators.foldLeft(possibleElevators.head) { (closestElevator, elevator) =>
-        val closestDistance = math.abs(closestElevator.currentFloor - requestFloor)
-        val currentDistance = math.abs(elevator.currentFloor - requestFloor)
-        if (currentDistance < closestDistance) {
-          bestId = elevator.id
-        } else {
-          bestId = closestElevator.id
+      Some(possibleElevators.minBy(elevator => math.abs(elevator.currentFloor - requestFloor)).id)
+    } else {
+      // find the closest elevator among all elevators
+      elevators.foldLeft(Option.empty[ElevatorImpl]) { (closestElevatorOpt, elevator) =>
+        closestElevatorOpt match {
+          case Some(closestElevator) =>
+            val closestDistance = math.abs(closestElevator.currentFloor - requestFloor)
+            val currentDistance = math.abs(elevator.currentFloor - requestFloor)
+            if (currentDistance < closestDistance) {
+              Some(elevator)
+            } else {
+              closestElevatorOpt
+            }
+          case None =>
+            Some(elevator)
         }
-      }
+      }.map(_.id)
     }
   }
 
-//  override def step(): Unit = {
+
+  //  override def step(): Unit = {
 //    //dla wszystkich wind po kolei zaktualizuj ich currentfloor direction i destination
 //    //rusz o 1 do przodu kazda ktora ma inny currentfloor od destination
 //    for (elevator <- elevators) {
