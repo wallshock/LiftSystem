@@ -4,15 +4,14 @@ import scala.collection.mutable
 import scala.collection.mutable.ArrayBuffer
 
 trait ElevatorSystem {
-  
+  def floors:Int
   def elevators:ArrayBuffer[Elevator]
-  def goUpRequest:ArrayBuffer[Int]
+  def goUpRequest:Array[Boolean]
 
-  def goDownRequest:ArrayBuffer[Int]
+  def goDownRequest:Array[Boolean]
   def addElevator(elevator: Elevator): Unit
 
   def pickup(floor: Int, direction: Int): Unit
-
   def update(elevatorId: Int, floor: Int, direction: Int): Unit
 
   def step(): Unit
