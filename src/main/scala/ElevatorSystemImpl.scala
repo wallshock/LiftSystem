@@ -17,11 +17,7 @@ class ElevatorSystemImpl(val floors:Int) extends ElevatorSystem {
       throw new IllegalArgumentException("Value must be greater than or equal to 0.")
   }
 
-
-
-
-
-  var destinationRequests = collection.mutable.Map.empty[Int, List[Int]] // elevatorId -> destinationFloors
+  val destinationRequests = collection.mutable.Map.empty[Int, ArrayBuffer[Int]] // elevatorId -> destinationFloors
   private var emergencyStopped = false
 
   override def pickup(floor: Int, direction: Int): Unit = {
@@ -54,11 +50,79 @@ class ElevatorSystemImpl(val floors:Int) extends ElevatorSystem {
     println("Added elevator")
   }
 
-  override def step(): Unit = {
-    //dla wszystkich wind po kolei zaktualizuj ich currentfloor direction i destination
-    //rusz o 1 do przodu kazda ktora ma inny currentfloor od destination
+  override def addElevatorDestination(id: Int, destination: Int): Unit = {
+    if (!destinationRequests.contains(id)) {
+      destinationRequests(id) = collection.mutable.ArrayBuffer.empty[Int]
+    }
+    val destFloors = destinationRequests(id)
+    if (!destFloors.contains(destination)) {
+      destFloors += destination
+    }
   }
 
   override def status: Array[(Int, Int, Int)] =
     elevators.map(x => x.getStatus).toArray
+
+  def chooseBestElevator(elevators: Array[ElevatorImpl], requestFloor: Int, requestDirection: Int): Int = {
+    var bestId = 0
+    val possibleElevators = elevators.filter { elevator =>
+      if (elevator.currentFloor == requestFloor) {
+        true // if an elevator is already on the same floor as the request, it is a possible candidate
+      } else if (requestDirection == 1) {
+        (elevator.direction == 1 || elevator.direction == 0) && elevator.currentFloor < requestFloor // the elevator must be going up and below the request floor
+      } else {
+        (elevator.direction == -1 || elevator.direction == 0) && elevator.currentFloor > requestFloor // the elevator must be going down and above the request floor
+      }
+    }
+
+    if (possibleElevators.isEmpty)
+      elevators.foldLeft(elevators.head) { (closestElevator, elevator) =>
+        val closestDistance = math.abs(closestElevator.currentFloor - requestFloor)
+        val currentDistance = math.abs(elevator.currentFloor - requestFloor)
+        if (currentDistance > closestDistance) {
+          bestId = closestElevator.id
+        } else {
+          bestId = elevator.id
+        }
+      }
+      
+    else { // there is at least one possible elevator
+      // find the closest elevator among the possible candidates
+      possibleElevators.foldLeft(possibleElevators.head) { (closestElevator, elevator) =>
+        val closestDistance = math.abs(closestElevator.currentFloor - requestFloor)
+        val currentDistance = math.abs(elevator.currentFloor - requestFloor)
+        if (currentDistance < closestDistance) {
+          bestId = elevator.id
+        } else {
+          bestId = closestElevator.id
+        }
+      }
+    }
+  }
+
+//  override def step(): Unit = {
+//    //dla wszystkich wind po kolei zaktualizuj ich currentfloor direction i destination
+//    //rusz o 1 do przodu kazda ktora ma inny currentfloor od destination
+//    for (elevator <- elevators) {
+//      val destination = destinationRequests.get(elevator.id)
+//      //check if we reached some destination
+//          // if yes then pick a new destination with the same direction
+//      //if pick a new destination with the same direction or continue to same destination
+//
+//      destination match {
+//        case Some(destination) if destination.nonEmpty =>
+//          if (elevator.direction == 1) {
+//            if (elevator.currentFloor < destination(0))
+//               // Closest destination above current floor
+//          } else if (elevator.direction == -1) {
+//            destination.max // Closest destination below current floor
+//          } else {
+//            elevator.currentFloor // Stay on current floor if no direction
+//          }
+//        case _ =>
+//          elevator.currentFloor // Stay on current floor if no requests
+//      }
+//    }
+//
+//  }
 }

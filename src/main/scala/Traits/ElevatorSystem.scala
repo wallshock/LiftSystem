@@ -15,6 +15,7 @@ trait ElevatorSystem {
   def update(elevatorId: Int, floor: Int, direction: Int): Unit
 
   def step(): Unit
+  def addElevatorDestination(id:Int,destination:Int): Unit
 
   def status: Array[(Int, Int, Int)]
 }

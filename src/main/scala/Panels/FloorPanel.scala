@@ -1,3 +1,5 @@
+package Panels
+
 import Traits.{ElevatorSystem, Panel}
 
 class FloorPanel(val elevatorSystem: ElevatorSystem) extends Panel{

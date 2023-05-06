@@ -1,5 +1,5 @@
 import scala.collection.mutable.ArrayBuffer
-
+import Panels.ElevatorPanel
 class Simulator(val floors:Int, val elevators:Int) {
 
   def run(): Unit = {
