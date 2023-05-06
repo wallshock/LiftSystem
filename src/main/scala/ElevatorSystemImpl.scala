@@ -39,7 +39,7 @@ class ElevatorSystemImpl(val floors:Int) extends ElevatorSystem {
     breakable {
       for (elevator <- elevators) {
         elevator match {
-          case ElevatorImpl(`elevatorId`,_,_,_,_) =>
+          case ElevatorImpl(`elevatorId`,_,_,_) =>
             elevator.setFloor(currentFloor)
             elevator.setDestination(destinationFloor)
             break
