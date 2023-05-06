@@ -1,4 +1,8 @@
 @main
 def main(): Unit = {
-  println("Hello world!")
+  val system = ElevatorSystemImpl()
+  for (i <- 0 to 10)
+    system.addElevator(ElevatorImpl(i,0,0,0))
+    val size = system.elevators.length
+
 }
