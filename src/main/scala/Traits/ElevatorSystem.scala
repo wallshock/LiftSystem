@@ -14,6 +14,7 @@ trait ElevatorSystem {
   def chooseBestElevator(requestFloor: Int, requestDirection: Int): Option[Int]
   def step(): Unit
   def addElevatorDestination(id:Int,destination:Int): Unit
-
+  def move(elevator:Elevator):Unit
+  def removeFromDestinations(id: Int, destination: Int): Unit
   def status: Array[(Int, Int, Int)]
 }
