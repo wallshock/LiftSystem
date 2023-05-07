@@ -2,12 +2,12 @@ package Panels
 
 import Traits.{ElevatorSystem, Panel}
 
-class FloorPanel(val elevatorSystem: ElevatorSystem) extends Panel{
-  def goUpButtonPressed(floor: Int): Unit = {
+class FloorPanel(val floor:Int,val elevatorSystem: ElevatorSystem) extends Panel{
+  def goUpButtonPressed(): Unit = {
     elevatorSystem.pickup(floor,1)
   }
 
-  def goDownButtonPressed(floor: Int): Unit = {
-    elevatorSystem.pickup(floor,0)
+  def goDownButtonPressed(): Unit = {
+    elevatorSystem.pickup(floor,-1)
   }
 }
