@@ -81,7 +81,6 @@ class ElevatorSystemImpl(val floors:Int) extends ElevatorSystem {
       if (direction == 0) {
         bestfloor = destinations.minBy(floor => math.abs(floor - currentFloor))
         update(id, currentFloor, bestfloor)
-        changeDirection(elevator)
       }
 
       // If the elevator is moving up, find the closest destination above the current floor
@@ -90,7 +89,6 @@ class ElevatorSystemImpl(val floors:Int) extends ElevatorSystem {
         if (filtered.nonEmpty) {
           bestfloor = filtered.minBy(floor => math.abs(floor - currentFloor))
           update(id, currentFloor, bestfloor)
-          changeDirection(elevator)
         }
       }
 
@@ -100,7 +98,6 @@ class ElevatorSystemImpl(val floors:Int) extends ElevatorSystem {
         if (filtered.nonEmpty) {
           bestfloor = filtered.minBy(floor => math.abs(floor - currentFloor))
           update(id, currentFloor, bestfloor)
-          changeDirection(elevator)
         }
       }
     }
@@ -159,6 +156,7 @@ class ElevatorSystemImpl(val floors:Int) extends ElevatorSystem {
   override def step(): Unit = {
     for (elevator <- elevators)
       chooseBestDestination(elevator.id)
+      changeDirection(elevator)
       move(elevator)
   }
 }

@@ -1,5 +1,7 @@
 package Traits
 
+import Panels.ElevatorPanel
+
 import scala.collection.mutable.ArrayBuffer
 
 trait Elevator {
@@ -11,7 +13,7 @@ trait Elevator {
 
   def currentDestination: Int
   
-  def panel: Panel
+  def panel: ElevatorPanel
   
   def setFloor(floor:Int):Unit
   def setDirection(direction:Int):Unit
