@@ -1,6 +1,6 @@
 
 # O środowisku
-Zadanie było realizowane przy pomocy zintegrowanego środowisko programistycznego IntelliJ IDEA, do uruchomienia używamy sbt.
+Zadanie było realizowane przy pomocy zintegrowanego środowisko programistycznego IntelliJ IDEA, do uruchomienia używamy sbt, uzywając komendy sbt run.
 
 # Wymagania
 
