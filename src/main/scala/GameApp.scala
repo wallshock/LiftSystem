@@ -1,19 +1,86 @@
 import Traits.GuiObserver
 import javafx.application.{Application, Platform}
+import javafx.collections.ObservableList
 import javafx.geometry.Insets
 import javafx.scene.Scene
 import javafx.scene.paint.Color
-import javafx.scene.control.{Button, Label, TextField}
-import javafx.scene.layout.GridPane
+import javafx.scene.control.{Label, TextField}
+import javafx.scene.layout.{BorderPane, GridPane, VBox}
 import javafx.scene.shape.Rectangle
 import javafx.stage.Stage
-
+import javafx.stage.WindowEvent
+import javafx.scene.control.ChoiceBox
+import scalafx.scene.control.Button
+import scalafx.collections.ObservableBuffer
+import scalafx.geometry.Pos
+import scalafx.scene.layout.HBox
 class GameApp extends Application,GuiObserver {
   var simulator: Simulator = null
   var floors = 0
   var elevators = 0
   var rectangleGrid = new GridPane()
   val grid = new GridPane()
+
+  import javafx.event.EventHandler
+  import javafx.event.EventHandler
+
+
+  def exithandle(stage:Stage):Unit={
+    stage.setOnCloseRequest(new EventHandler[WindowEvent]() {
+      override def handle(event: WindowEvent): Unit = {
+        Platform.exit()
+        System.exit(0)
+      }
+    })
+  }
+
+  def floorBox(): HBox = {
+    val label = new Label("Panel Przywołania <Piętro : Góra | Dół> ")
+    val floorNumber = ObservableBuffer(0 until floors: _*)
+    val floorBox = new ChoiceBox[Int](floorNumber)
+
+    val elevatorDirection = ObservableBuffer("Góra","Dół")
+    val elevBox = new ChoiceBox[String](elevatorDirection)
+
+    val okButton = new Button("OK")
+    okButton.onAction = _ => {
+      val floor = floorBox.getValue
+      val direction = elevBox.getValue
+      if(direction == "Góra"){
+        simulator.AVSysytemHq.floorPanels(floor).goUpButtonPressed()
+      }else{
+        simulator.AVSysytemHq.floorPanels(floor).goDownButtonPressed()
+      }
+
+    }
+    val hbox = new HBox()
+    hbox.children.addAll(label, floorBox,elevBox,okButton)
+    hbox
+  }
+
+  def simulateButton():Button={
+    val toggleButton = new Button("Włącz/Wyłącz Symulacje")
+    toggleButton.onAction = _ => {
+      simulator.simulate = !simulator.simulate
+    }
+    toggleButton
+  }
+  def elevatorBox():HBox={
+    val label = new Label("Panel Wewnętrzny <Winda : Cel> ")
+    val elevatorNumbers = ObservableBuffer(0 until elevators: _*)
+    val elevBox = new ChoiceBox[Int](elevatorNumbers)
+    val floorNumber = ObservableBuffer(0 until floors: _*)
+    val floorBox = new ChoiceBox[Int](floorNumber)
+    val okButton = new Button("OK")
+    okButton.onAction = _ => {
+      val elev = simulator.system.elevators(elevBox.getValue)
+      val floor = floorBox.getValue
+      elev.panel.chooseFloorButtonPressed(elev.id, floor)
+    }
+    val hbox = new HBox()
+    hbox.children.addAll(label,elevBox, floorBox, okButton)
+    hbox
+  }
 
   override def start(primaryStage: Stage): Unit = {
     grid.setPadding(new Insets(10, 10, 10, 10))
@@ -33,13 +100,14 @@ class GameApp extends Application,GuiObserver {
     val submitButton = new Button("Create Building")
     GridPane.setColumnSpan(submitButton, 2)
     grid.add(submitButton, 0, 2)
+    exithandle(primaryStage)
 
     submitButton.setOnAction { _ =>
       elevators = xField.getText.toInt
       floors = yField.getText.toInt
       // create grid based on x and y values
       rectangleGrid = new GridPane()
-      simulator = new Simulator(floors,elevators,this)
+      simulator = new Simulator(floors, elevators, this)
       for {
         i <- 0 until elevators
         j <- 0 until floors
@@ -50,8 +118,21 @@ class GameApp extends Application,GuiObserver {
         rectangleGrid.add(rectangle, i, j)
       }
 
-      val scene = new Scene(rectangleGrid, 55 * elevators, 90 * floors)
+      val elevatorHBox = elevatorBox()
+      val floorHBox = floorBox()
+      val button = simulateButton()
+
+      elevatorHBox.setPadding(new Insets(10, 10, 10, 10))
+      floorHBox.setPadding(new Insets(10, 10, 10, 10))
+      button.setPadding(new Insets(10, 10, 10, 10))
+      val rightVBox = new VBox(elevatorHBox, floorHBox,button)
+      val borderPane = new BorderPane()
+      borderPane.setLeft(rectangleGrid)
+      borderPane.setRight(rightVBox)
+
+      val scene = new Scene(borderPane, 45 * elevators + 300, 75 * floors)
       primaryStage.setScene(scene)
+      primaryStage.show()
 
       Thread(simulator).start()
     }

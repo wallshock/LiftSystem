@@ -13,7 +13,6 @@ class ElevatorSystemImpl(val floors:Int) extends ElevatorSystem {
   override def pickup(floor: Int, direction: Int): Unit = {
     chooseBestElevator(floor, direction).map { result =>
       addElevatorDestination(result,floor)
-      println(s"Added destination: $floor for id: $result elevator $direction")
     }.getOrElse {
       println(s"No elevator available to pick up from floor $floor going $direction")
     }
@@ -46,7 +45,6 @@ class ElevatorSystemImpl(val floors:Int) extends ElevatorSystem {
   override def addElevator(elevator: Elevator): Unit = {
     elevators += elevator
     destinationRequests(elevator.id) = collection.mutable.ArrayBuffer.empty[Int]
-    println("Added elevator")
   }
 
   //this function adds some destination for an elevator
@@ -57,7 +55,11 @@ class ElevatorSystemImpl(val floors:Int) extends ElevatorSystem {
     val destFloors = destinationRequests(id)
     if (!destFloors.contains(destination)) {
       destFloors += destination
+      println(s"Added destination: $destination for elevator id: $id")
       chooseBestDestination(id)
+    }
+    else{
+      println(s"Destination already added.")
     }
   }
 
@@ -116,8 +118,6 @@ class ElevatorSystemImpl(val floors:Int) extends ElevatorSystem {
         false // invalid request direction
       }
     }
-    possibleElevators.foreach(elevator => print(elevator.id))
-    println()
     if (possibleElevators.nonEmpty) {
       // find the closest elevator among the possible candidates
       Some(possibleElevators.minBy(elevator => math.abs(elevator.currentFloor - requestFloor)).id)

@@ -6,7 +6,7 @@ import javafx.scene.layout.GridPane
 import java.lang.Runnable
 import scala.util.Random
 class Simulator(val floors:Int, val elevators:Int,observer:GuiObserver) extends Runnable {
-  
+  var simulate: Boolean = false
   val system: ElevatorSystemImpl = ElevatorSystemImpl(floors)
   val AVSysytemHq: AVSystemHeadquaters = AVSystemHeadquaters(floors, system)
   def randomFloorPanelPickup(building:Building):Unit={
@@ -34,9 +34,11 @@ class Simulator(val floors:Int, val elevators:Int,observer:GuiObserver) extends 
   def run(): Unit = {
     init()
     while(true) {
-      val randomInt = Random.nextInt(4)
-      if (randomInt == 1) randomFloorPanelPickup(AVSysytemHq)
-      else if (randomInt == 2) randomElevatorPanelTarget(AVSysytemHq)
+      if(simulate) {
+        val randomInt = Random.nextInt(5)
+        if (randomInt == 1) randomFloorPanelPickup(AVSysytemHq)
+        else if (randomInt == 2) randomElevatorPanelTarget(AVSysytemHq)
+      }
       observer.updateGuiBefore()
       AVSysytemHq.elevatorSystem.step()
       observer.updateGuiAfter()
