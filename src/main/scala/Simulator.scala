@@ -11,7 +11,7 @@ class Simulator(val floors:Int, val elevators:Int,observer:GuiObserver) extends 
   val AVSysytemHq: AVSystemHeadquaters = AVSystemHeadquaters(floors, system)
   def randomFloorPanelPickup(building:Building):Unit={
     //choose random floor and up or down direction to go
-    val randomFloor = Random.nextInt(building.floors+1)
+    val randomFloor = Random.nextInt(building.floors)
     val updown = Random.nextInt(2)
     if (updown == 1) building.floorPanels(randomFloor).goUpButtonPressed()
     else building.floorPanels(randomFloor).goDownButtonPressed()
@@ -19,7 +19,7 @@ class Simulator(val floors:Int, val elevators:Int,observer:GuiObserver) extends 
 
   def randomElevatorPanelTarget(building:Building): Unit = {
     //choose random elevator and in it choose random floor destination
-    val randomFloor = Random.nextInt(building.floors+1)
+    val randomFloor = Random.nextInt(building.floors)
     val randomElev = Random.nextInt(building.elevatorSystem.elevators.length)
     val elev = building.elevatorSystem.elevators(randomElev)
     elev.panel.chooseFloorButtonPressed(elev.id,randomFloor)
@@ -34,7 +34,7 @@ class Simulator(val floors:Int, val elevators:Int,observer:GuiObserver) extends 
   def run(): Unit = {
     init()
     while(true) {
-      val randomInt = Random.nextInt(10)
+      val randomInt = Random.nextInt(4)
       if (randomInt == 1) randomFloorPanelPickup(AVSysytemHq)
       else if (randomInt == 2) randomElevatorPanelTarget(AVSysytemHq)
       observer.updateGuiBefore()

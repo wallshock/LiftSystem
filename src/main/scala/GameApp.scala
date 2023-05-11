@@ -39,7 +39,7 @@ class GameApp extends Application,GuiObserver {
       floors = yField.getText.toInt
       // create grid based on x and y values
       rectangleGrid = new GridPane()
-      simulator = new Simulator(elevators, floors,this)
+      simulator = new Simulator(floors,elevators,this)
       for {
         i <- 0 until elevators
         j <- 0 until floors
@@ -64,6 +64,7 @@ class GameApp extends Application,GuiObserver {
   def updateGuiBefore(): Unit = {
     try {
       Platform.runLater(this.updateGuiViewsBefore)
+      Thread.sleep(1)
     } catch {
       case ex: InterruptedException =>
         System.out.println(ex.getMessage)
@@ -73,7 +74,7 @@ class GameApp extends Application,GuiObserver {
   def updateGuiAfter(): Unit = {
     try {
       Platform.runLater(this.updateGuiViewsAfter)
-      Thread.sleep(1000)
+      Thread.sleep(800)
     } catch {
       case ex: InterruptedException =>
         System.out.println(ex.getMessage)
