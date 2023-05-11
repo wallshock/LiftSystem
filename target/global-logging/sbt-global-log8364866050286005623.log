@@ -1,0 +1,8 @@
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(fullOptJS, Some(a9c25934-f320-4176-b694-eeaa0d3e214c), Some(CommandSource(console0)))[0m
+[0m[[0m[0mdebug[0m] [0m[0mEvaluating tasks: Compile / fullOptJS[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunning task... Cancel: Signal, check cycles: false, forcegc: true[0m
+[0m[[0m[0minfo[0m] [0m[0mcompiling 12 Scala sources to C:\Users\rudy7\IdeaProjects\LiftSystem\target\scala-3.2.2\classes ...[0m
+[0m[[0m[0minfo[0m] [0m[0mFull optimizing C:\Users\rudy7\IdeaProjects\LiftSystem\target\scala-3.2.2\liftsystem-opt[0m
+[0m[[0m[0mdebug[0m] [0m[0mGlobal IR cache stats: reused: 14 -- invalidated: 15 -- trees read: 0[0m
+[0m[[0m[32msuccess[0m] [0m[0mTotal time: 5 s, completed 08-May-2023 19:38:30[0m
+[0m[[0m[0mdebug[0m] [0m[0m> Exec(shell, None, None)[0m

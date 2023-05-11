@@ -1,0 +1,21 @@
+[0m[[0m[0minfo[0m] [0m[0mFull optimizing C:\Users\rudy7\IdeaProjects\LiftSystem\target\scala-3.2.2\liftsystem-opt[0m
+[0m[[0m[0mdebug[0m] [0m[0mLinker: Compute reachability: 8645 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mLinker: Assemble LinkedClasses: 1358 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mLinker: Check IR: 10817 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mLinker: 36384 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mOptimizer: Batch mode: false[0m
+[0m[[0m[0mdebug[0m] [0m[0mOptimizer: Incremental part: 10012 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mOptimizer: Optimizing 0 methods.[0m
+[0m[[0m[0mdebug[0m] [0m[0mOptimizer: Optimizer part: 141 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mOptimizer: 10602 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mRefiner: Compute reachability: 2456 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mRefiner: Assemble LinkedClasses: 215 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mRefiner: 3391 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mModule Splitter: Calculate Dependency Info: 31 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mModule Splitter: 95 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mEmitter: Generate Classes: 2 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mEmitter: Write trees: 1 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mEmitter: Class tree cache stats: reused: 0 -- invalidated: 0[0m
+[0m[[0m[0mdebug[0m] [0m[0mEmitter: Method tree cache stats: reused: 0 -- invalidated: 0[0m
+[0m[[0m[0mdebug[0m] [0m[0mEmitter: 610 us[0m
+[0m[[0m[0mdebug[0m] [0m[0mClosure: Write result: 215 us[0m
