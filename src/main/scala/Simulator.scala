@@ -16,6 +16,12 @@ class Simulator(val floors:Int, val elevators:Int,observer:GuiObserver) extends 
     if (updown == 1) building.floorPanels(randomFloor).goUpButtonPressed()
     else building.floorPanels(randomFloor).goDownButtonPressed()
   }
+  
+  def toggleSimulation(): Unit ={
+    simulate = !simulate
+    if(simulate) println("Simulation started")
+    else println("Simulation stopped")
+  }
 
   def randomElevatorPanelTarget(building:Building): Unit = {
     //choose random elevator and in it choose random floor destination

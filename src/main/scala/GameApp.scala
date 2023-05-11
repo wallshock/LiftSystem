@@ -61,7 +61,7 @@ class GameApp extends Application,GuiObserver {
   def simulateButton():Button={
     val toggleButton = new Button("Włącz/Wyłącz Symulacje")
     toggleButton.onAction = _ => {
-      simulator.simulate = !simulator.simulate
+      simulator.toggleSimulation()
     }
     toggleButton
   }
